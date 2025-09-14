@@ -91,10 +91,11 @@ Run the FastAPI app locally:
 ```bash
 uvicorn app:app --reload
 ```
-Access the app at:  
-👉 [http://127.0.0.1:8000](http://127.0.0.1:8000)  
-
-
+## 🚀 This APP is available in web 
+### Web service link 
+```bash
+  https://qnarag.onrender.com
+```
 ## 🤝 Contributing
 Contributions are welcome! Please **fork** this repo and submit a **pull request**.  
 
