@@ -116,5 +116,5 @@ This project is licensed under the **MIT License**. See [LICENSE](./LICENSE) for
 ## 👤 Author
 **Aziz Ashfak**  
 📧 [azizashfak@gmail.com](mailto:azizashfak@gmail.com)  
-🔗 [LinkedIn](https://www.linkedin.com/in/aziz-ashfak/)  
+🔗 [LinkedIn](https://www.linkedin.com/in/aziz-ashfak1/)  
 🐙 [GitHub](https://github.com/aziz-ashfak)  
