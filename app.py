@@ -3,6 +3,7 @@ import sys
 import tempfile
 import logging
 import markdown
+import uvicorn
 from fastapi import FastAPI, Request, UploadFile, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -201,3 +202,9 @@ async def shutdown_event():
     if temp_pdf_path and os.path.exists(temp_pdf_path):
         os.remove(temp_pdf_path)
         logger.info("Temp PDF cleaned up on shutdown")
+        
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))  # Render sets PORT
+    uvicorn.run("app:app", host="0.0.0.0", port=port, reload=False)
