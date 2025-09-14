@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Q&A Generator</title>
+    <link rel="stylesheet" href="/style/styles.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const results = document.querySelectorAll('.result');
+            results.forEach(result => {
+                const toggleButton = result.querySelector('.toggle-button');
+                if (toggleButton) {
+                    toggleButton.addEventListener('click', () => {
+                        result.classList.toggle('expanded');
+                        toggleButton.textContent = result.classList.contains('expanded') ? 'Collapse' : 'Expand';
+                    });
+                }
+                // Auto-expand if content is long
+                const content = result.querySelector('.markdown-content');
+                if (content && content.scrollHeight > result.clientHeight) {
+                    result.classList.add('expanded');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>PDF Q&A Generator</h1>
+    </header>
+    <main>
+        <section id="process">
+            <h2>Upload PDF for Q&A</h2>
+            <form action="/process" method="post" enctype="multipart/form-data">
+                <label for="file">Upload PDF:</label>
+                <input type="file" id="file" name="file" accept=".pdf" required>
+                <label for="num_questions">Number of Questions:</label>
+                <input type="number" id="num_questions" name="num_questions" min="1" max="10" value="3" required>
+                <label for="mode">Mode:</label>
+                <select id="mode" name="mode" required>
+                    <option value="Per Page">Per Page</option>
+                    <option value="Merged">Merged</option>
+                </select>
+                <button type="submit">Process PDF</button>
+            </form>
+            {% if bot_results.qna_html %}
+            <div class="result">
+                <h3>Q&A Results</h3>
+                <button class="toggle-button">Expand</button>
+                <div class="markdown-content">
+                    {{ bot_results.qna_html | safe }}
+                </div>
+                <div class="download-buttons">
+                    <a href="/download/qna_md">Download Markdown</a>
+                    <a href="/download/csv">Download CSV</a>
+                    <a href="/download/doc">Download Word</a>
+                    <a href="/download/pdf">Download PDF</a>
+                </div>
+            </div>
+            {% elif bot_results.qna %}
+            <div class="result error">
+                <div class="markdown-content">
+                    <p>{{ bot_results.qna }}</p>
+                </div>
+            </div>
+            {% else %}
+            <div class="result">
+                <div class="markdown-content">
+                    <p>No Q&A results available. Upload a PDF to generate Q&A.</p>
+                </div>
+            </div>
+            {% endif %}
+        </section>
+        <section id="query">
+            <h2>Query the PDF</h2>
+            {% if bot_results.qna_html %}
+            <p class="ready-message">PDF ready for queries! Submit your question below.</p>
+            {% endif %}
+            <form action="/query" method="post">
+                <label for="query">Enter Query:</label>
+                <input type="text" id="query" name="query" placeholder="e.g., What is the main contribution of the paper?" required>
+                <button type="submit">Submit Query</button>
+            </form>
+            {% if bot_results.query_html %}
+            <div class="result">
+                <h3>Query Results</h3>
+                <button class="toggle-button">Expand</button>
+                <div class="markdown-content">
+                    {% for html_result in bot_results.query_html %}
+                    {{ html_result | safe }}
+                    {% if not loop.last %}
+                    <hr>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="download-buttons">
+                    <a href="/download/query_md">Download as Markdown</a>
+                </div>
+            </div>
+            {% elif bot_results.query %}
+            <div class="result error">
+                <div class="markdown-content">
+                    <p>{{ bot_results.query | join('\n') }}</p>
+                </div>
+            </div>
+            {% else %}
+            <div class="result">
+                <div class="markdown-content">
+                    <p>No query results available. Upload a PDF and submit a query.</p>
+                </div>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+    <footer>
+        
+        <div class="user-info">
+        <p><strong>Publisher:</strong> Aziz Ashfak</p>
+        <p><strong>Email:</strong> <a href="mailto:azizashfak@gmail.com">azizashfak@gmail.com</a> <span class="icon">✉️</span></p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/ashfakyeafi" target="_blank">github.com/ashfakyeafi</a> <span class="icon">📂</span></p>
+        <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/ashfakyeafi/" target="_blank">linkedin.com/in/ashfakyeafi</a> <span class="icon">💼</span></p>
+        <p><strong>Kaggle:</strong> <a href="https://www.kaggle.com/ashfakyeafi" target="_blank">kaggle.com/ashfakyeafi</a> <span class="icon">📊</span></p>
+       
+    </div>
+    <p class="copyright">&copy; 2025 Aziz Ashfak. All rights reserved.</p>
+     <p>&copy; 2025 PDF Q&A Generator. Powered by FastAPI & LangChain.</p>
+    
+    </footer>
+</body>
+</html>
