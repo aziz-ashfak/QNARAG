@@ -1,0 +1,27 @@
+faiss-cpu
+groq
+langchain-groq
+PyPDF2
+langchain_google_genai
+langchain
+streamlit
+langchain_community
+python-dotenv
+pypdf
+google-cloud-aiplatform>=1.38
+pytesseract
+pillow
+tiktoken
+pandas
+unstructured
+python-docx
+reportlab
+PyMuPDF
+langchain_groq
+sentence-transformers
+langchain-huggingface
+uvicorn[standard] 
+fastapi
+python-multipart
+markdown
+-e .
